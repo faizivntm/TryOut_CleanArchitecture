@@ -12,9 +12,9 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.kennyc.view.MultiStateView
 import com.salugan.cobakeluar.R
+import com.salugan.cobakeluar.core.utils.Result
 import com.salugan.cobakeluar.databinding.ActivityProfileBinding
 import com.salugan.cobakeluar.ui.activity.authentication.ActivityLogin
-import com.salugan.cobakeluar.data.Result
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -41,7 +41,7 @@ class ActivityProfile : AppCompatActivity() {
         viewModel.resultDataProfile.observe(this) {
             when (it) {
                 is Result.Success -> {
-                    if(it.data.email!!.isEmpty() && it.data.nama!!.isEmpty() && it.data.noHp!!.isEmpty()){
+                    if (it.data.email!!.isEmpty() && it.data.nama!!.isEmpty() && it.data.noHp!!.isEmpty()) {
                         multiStateView.viewState = MultiStateView.ViewState.EMPTY
                     }
                     multiStateView.viewState = MultiStateView.ViewState.CONTENT
@@ -49,20 +49,23 @@ class ActivityProfile : AppCompatActivity() {
                     binding.email.text = it.data.email
                     binding.phoneNumber.text = it.data.noHp
                 }
+
                 is Result.Error<*> -> {
                     multiStateView.viewState = MultiStateView.ViewState.ERROR
                     loadingDialog?.dismiss()
                     Toast.makeText(this, "Data gagal diambil", Toast.LENGTH_SHORT).show()
                 }
+
                 is Result.Loading -> {
                     multiStateView.viewState = MultiStateView.ViewState.LOADING
                 }
             }
         }
-        binding.btnLogout.setOnClickListener() {
+        binding.btnLogout.setOnClickListener {
             dialogLogout()
         }
     }
+
     fun dialogLogout() {
         val dialogView = layoutInflater.inflate(R.layout.dialog_logout, null)
         val builder = AlertDialog.Builder(this)
@@ -72,7 +75,7 @@ class ActivityProfile : AppCompatActivity() {
         builder.setView(dialogView)
         dialogLogout = builder.create()
         dialogLogout?.show()
-        btnYa.setOnClickListener() {
+        btnYa.setOnClickListener {
             loading()
             val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .build()
@@ -80,15 +83,16 @@ class ActivityProfile : AppCompatActivity() {
             googleSignInClient.signOut().addOnCompleteListener(this) {
                 FirebaseAuth.getInstance().signOut()
                 val intent = Intent(this, ActivityLogin::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                 startActivity(intent)
                 loadingDialog?.dismiss()
             }
         }
-        btnTidak.setOnClickListener() {
+        btnTidak.setOnClickListener {
             dialogLogout?.dismiss()
         }
     }
+
     private fun loading() {
         val dialogView = layoutInflater.inflate(R.layout.dialog_loading, null)
         val builder = AlertDialog.Builder(this)

@@ -8,19 +8,19 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
+import com.salugan.cobakeluar.core.data.local.TryoutManager
+import com.salugan.cobakeluar.core.domain.models.QuestionModel
+import com.salugan.cobakeluar.core.utils.Result
 import com.salugan.cobakeluar.data.TryoutRepository
-import com.salugan.cobakeluar.model.QuestionModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
-import com.salugan.cobakeluar.data.Result
-import com.salugan.cobakeluar.data.local.TryoutManager
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class SoalViewModel @Inject constructor(
     private val tryoutRepository: TryoutRepository,
     private val tryoutManager: TryoutManager
-) : ViewModel(){
+) : ViewModel() {
 
     private var timer: CountDownTimer? = null
 

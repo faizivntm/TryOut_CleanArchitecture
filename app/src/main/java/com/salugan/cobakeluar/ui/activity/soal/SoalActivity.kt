@@ -1,34 +1,27 @@
 package com.salugan.cobakeluar.ui.activity.soal
 
 import android.content.Intent
-import android.content.res.Resources
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.format.DateUtils
 import android.util.Log
-import android.util.TypedValue
 import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.core.content.ContextCompat
-import androidx.viewpager.widget.ViewPager
+import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.kennyc.view.MultiStateView
 import com.salugan.cobakeluar.R
-import com.salugan.cobakeluar.adapter.TabPagerSoalAdapter
-import com.salugan.cobakeluar.data.Error
-import com.salugan.cobakeluar.data.Result
+import com.salugan.cobakeluar.core.domain.models.QuestionModel
+import com.salugan.cobakeluar.core.ui.TabPagerSoalAdapter
+import com.salugan.cobakeluar.core.utils.Error
+import com.salugan.cobakeluar.core.utils.Result
 import com.salugan.cobakeluar.databinding.ActivitySoalBinding
-import com.salugan.cobakeluar.model.QuestionModel
 import com.salugan.cobakeluar.ui.activity.hasil.ActivityHasil
 import dagger.hilt.android.AndroidEntryPoint
-import org.w3c.dom.Text
 
 @AndroidEntryPoint
 class SoalActivity : AppCompatActivity(), MultiStateView.StateListener {
@@ -183,7 +176,7 @@ class SoalActivity : AppCompatActivity(), MultiStateView.StateListener {
         soalViewModel.startTimer()
     }
 
-    companion object{
+    companion object {
         const val KATEGORI = "extra_kategori"
     }
 

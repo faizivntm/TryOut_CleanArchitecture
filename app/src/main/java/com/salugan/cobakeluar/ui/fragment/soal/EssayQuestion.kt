@@ -6,22 +6,18 @@ import android.os.Bundle
 import android.text.Html
 import android.text.format.DateUtils
 import android.util.Log
-import android.view.Gravity
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
-import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.tabs.TabLayout
 import com.salugan.cobakeluar.R
+import com.salugan.cobakeluar.core.domain.models.QuestionModel
 import com.salugan.cobakeluar.databinding.FragmentEssayQuestionBinding
-import com.salugan.cobakeluar.model.QuestionModel
 import com.salugan.cobakeluar.ui.activity.hasil.ActivityHasil
 import com.salugan.cobakeluar.ui.activity.soal.SoalActivity
 import com.salugan.cobakeluar.utils.QUESTION
@@ -83,18 +79,19 @@ class EssayQuestion : Fragment() {
             }
         }
     }
+
     private fun checkTryoutStatus() {
-        (requireActivity() as SoalActivity).soalViewModel.getTryoutStatus().observe(requireActivity()) {
-            Log.d("itumasbrow", "state: $it")
+        (requireActivity() as SoalActivity).soalViewModel.getTryoutStatus()
+            .observe(requireActivity()) {
+                Log.d("itumasbrow", "state: $it")
 
-            if (it) {
-                binding.edtJawaban.isEnabled = false
-                binding.btnJawab.visibility = View.GONE
-                binding.btnCekPembahasanEssay.visibility = View.VISIBLE
+                if (it) {
+                    binding.edtJawaban.isEnabled = false
+                    binding.btnJawab.visibility = View.GONE
+                    binding.btnCekPembahasanEssay.visibility = View.VISIBLE
+                }
             }
-        }
     }
-
 
 
     private fun setBtnJawab(question: QuestionModel) {
@@ -103,11 +100,16 @@ class EssayQuestion : Fragment() {
             val userAnswer = userAnswerText.replace(',', '.').toDoubleOrNull()
 
             if (userAnswer != null) {
-                val tabView = LayoutInflater.from(requireContext()).inflate(R.layout.tab_title, null) as TextView
+                val tabView = LayoutInflater.from(requireContext())
+                    .inflate(R.layout.tab_title, null) as TextView
 
-                val systemAnswer: Double? = question.shortAnswer?.get(0)?.shortAnswerText?.replace(',', '.')?.toDoubleOrNull()
-                val systemAnswer1: Double? = question.shortAnswer?.get(0)?.firstRange?.replace(',', '.')?.toDoubleOrNull()
-                val systemAnswer2: Double? = question.shortAnswer?.get(0)?.secondRange?.replace(',', '.')?.toDoubleOrNull()
+                val systemAnswer: Double? =
+                    question.shortAnswer?.get(0)?.shortAnswerText?.replace(',', '.')
+                        ?.toDoubleOrNull()
+                val systemAnswer1: Double? =
+                    question.shortAnswer?.get(0)?.firstRange?.replace(',', '.')?.toDoubleOrNull()
+                val systemAnswer2: Double? =
+                    question.shortAnswer?.get(0)?.secondRange?.replace(',', '.')?.toDoubleOrNull()
 
                 if (systemAnswer != null && systemAnswer == userAnswer) {
                     jawabanBenar(tabView)
@@ -163,13 +165,17 @@ class EssayQuestion : Fragment() {
                 (requireActivity() as SoalActivity).soalViewModel.resetTimer()
                 val score = (requireActivity() as SoalActivity).score
 
-                val completionTimeMillis = (requireActivity() as SoalActivity).soalViewModel.calculateCompletionTime()
+                val completionTimeMillis =
+                    (requireActivity() as SoalActivity).soalViewModel.calculateCompletionTime()
                 val completionTimeSeconds = completionTimeMillis / 1000
                 val completionTimeString = DateUtils.formatElapsedTime(completionTimeSeconds)
 
                 val intent = Intent(requireActivity(), ActivityHasil::class.java)
                 intent.putExtra(ActivityHasil.SCORE, score)
-                intent.putExtra(ActivityHasil.ANSWERS, ArrayList((requireActivity() as SoalActivity).answers))
+                intent.putExtra(
+                    ActivityHasil.ANSWERS,
+                    ArrayList((requireActivity() as SoalActivity).answers)
+                )
                 intent.putExtra(ActivityHasil.COMPLETION_TIME, completionTimeString)
                 startActivity(intent)
             }

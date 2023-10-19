@@ -7,28 +7,24 @@ import android.text.Html
 import android.text.format.DateUtils
 import android.util.Log
 import android.view.Gravity
-
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.core.view.get
+import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.tabs.TabLayout
 import com.salugan.cobakeluar.R
+import com.salugan.cobakeluar.core.domain.models.QuestionModel
+import com.salugan.cobakeluar.core.domain.models.SelectionModel
 import com.salugan.cobakeluar.databinding.FragmentMultipleChoiceQuestionBinding
-import com.salugan.cobakeluar.model.QuestionModel
-import com.salugan.cobakeluar.model.SelectionModel
 import com.salugan.cobakeluar.ui.activity.hasil.ActivityHasil
-import com.salugan.cobakeluar.ui.activity.history.ketidakpastian.ActivityHistory
 import com.salugan.cobakeluar.ui.activity.soal.SoalActivity
 import com.salugan.cobakeluar.utils.QUESTION
 import com.salugan.cobakeluar.utils.StringProcessing
@@ -101,27 +97,30 @@ class MultipleChoiceQuestion : Fragment() {
     }
 
     private fun checkTryoutStatus() {
-        (requireActivity() as SoalActivity).soalViewModel.getTryoutStatus().observe(requireActivity()) {
-            Log.d("itumasbrow", "state: $it")
+        (requireActivity() as SoalActivity).soalViewModel.getTryoutStatus()
+            .observe(requireActivity()) {
+                Log.d("itumasbrow", "state: $it")
 
-            if (it) {
-                disableScrolling()
-                binding.btnJawab.visibility = View.GONE
-                binding.btnCekPembahasan.visibility = View.VISIBLE
+                if (it) {
+                    disableScrolling()
+                    binding.btnJawab.visibility = View.GONE
+                    binding.btnCekPembahasan.visibility = View.VISIBLE
+                }
             }
-        }
     }
+
     private fun setAnswerList(question: QuestionModel) {
 
 
-        for ((index, option) in question.selections?.withIndex() ?: emptyList<SelectionModel>().withIndex()) {
+        for ((index, option) in question.selections?.withIndex()
+            ?: emptyList<SelectionModel>().withIndex()) {
             val linearLayout = LinearLayout(requireContext())
             val layoutParams = LinearLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, // Width
                 ViewGroup.LayoutParams.WRAP_CONTENT  // Height
             )
 
-            if(option.id == question.selectionAnswer?.get(0)?.selectionId) {
+            if (option.id == question.selectionAnswer?.get(0)?.selectionId) {
                 correctAnswerIndex = index
             }
 
@@ -140,14 +139,14 @@ class MultipleChoiceQuestion : Fragment() {
 
             val optionText = TextView(requireContext())
             optionText.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
-            optionText.text = "("+(97+index).toChar().toString().uppercase() + ") "
+            optionText.text = "(" + (97 + index).toChar().toString().uppercase() + ") "
 
             val mathViewOption = MathView(requireContext(), null)
             val mathViewLayoutParams = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
             )
-            mathViewLayoutParams.setMargins(8,8,8,8)
+            mathViewLayoutParams.setMargins(8, 8, 8, 8)
             mathViewOption.layoutParams = mathViewLayoutParams
             mathViewOption.text = option.text
 
@@ -198,7 +197,8 @@ class MultipleChoiceQuestion : Fragment() {
         binding.btnJawab.setOnClickListener {
             if (answer != null) {
                 val tabView =
-                    LayoutInflater.from(requireContext()).inflate(R.layout.tab_title, null) as TextView
+                    LayoutInflater.from(requireContext())
+                        .inflate(R.layout.tab_title, null) as TextView
                 if (answer?.id == question.selectionAnswer?.get(0)?.selectionId) {
                     Toast.makeText(requireActivity(), "Jawaban benar", Toast.LENGTH_SHORT).show()
                     setSelectionBackground(true)
@@ -286,13 +286,17 @@ class MultipleChoiceQuestion : Fragment() {
                 val score = (requireActivity() as SoalActivity).score
 
                 (requireActivity() as SoalActivity).soalViewModel.stopTimer()
-                val completionTimeMillis = (requireActivity() as SoalActivity).soalViewModel.calculateCompletionTime()
+                val completionTimeMillis =
+                    (requireActivity() as SoalActivity).soalViewModel.calculateCompletionTime()
                 val completionTimeSeconds = completionTimeMillis / 1000
                 val completionTimeString = DateUtils.formatElapsedTime(completionTimeSeconds)
 
                 val intent = Intent(requireActivity(), ActivityHasil::class.java)
                 intent.putExtra(ActivityHasil.SCORE, score)
-                intent.putExtra(ActivityHasil.ANSWERS, ArrayList((requireActivity() as SoalActivity).answers))
+                intent.putExtra(
+                    ActivityHasil.ANSWERS,
+                    ArrayList((requireActivity() as SoalActivity).answers)
+                )
                 intent.putExtra(ActivityHasil.COMPLETION_TIME, completionTimeString)
                 startActivity(intent)
 

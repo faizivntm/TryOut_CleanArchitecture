@@ -1,7 +1,6 @@
 package com.salugan.cobakeluar.data.firebase
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.liveData
@@ -9,16 +8,16 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.salugan.cobakeluar.model.UserModel
-import javax.inject.Inject
-import com.salugan.cobakeluar.data.Result
-import com.salugan.cobakeluar.model.HasilModel
+import com.salugan.cobakeluar.core.domain.models.HasilModel
+import com.salugan.cobakeluar.core.domain.models.UserModel
+import com.salugan.cobakeluar.core.utils.Result
 import com.salugan.cobakeluar.utils.DeviceConnection
+import javax.inject.Inject
 
 class Repository @Inject constructor(
     private val db: FirebaseDatabase,
     private val context: Context
-){
+) {
     val resultAddData = MutableLiveData<Result<String>>()
     val resultDataProfile = MutableLiveData<Result<UserModel>>()
     val resulHasilTO = MutableLiveData<Result<String>>()
@@ -39,7 +38,7 @@ class Repository @Inject constructor(
 
     fun dataProfile(userId: String): LiveData<Result<UserModel>> {
         resultDataProfile.value = Result.Loading
-        val database =db.getReference("users")
+        val database = db.getReference("users")
         val query = database.orderByChild("userId").equalTo(userId)
         query.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -54,6 +53,7 @@ class Repository @Inject constructor(
                     resultDataProfile.value = Result.Error("User tidak ditemukan")
                 }
             }
+
             override fun onCancelled(error: DatabaseError) {
                 resultDataProfile.value = Result.Error(error.message)
             }
@@ -81,7 +81,6 @@ class Repository @Inject constructor(
 
     fun getHasilTryout(userId: String): LiveData<Result<List<HasilModel>>> = liveData {
         val userRef = db.getReference("users")
-
 
 
         val liveData = MutableLiveData<Result<List<HasilModel>>>()
