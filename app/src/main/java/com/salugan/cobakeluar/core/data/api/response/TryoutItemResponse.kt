@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class TryoutItem(
+data class TryoutItemResponse(
 
     @field:SerializedName("subject_id")
     val subjectId: Int? = null,
@@ -17,7 +17,7 @@ data class TryoutItem(
     val categoryId: Int? = null,
 
     @field:SerializedName("question")
-    val question: List<QuestionItem>,
+    val question: List<QuestionItemResponse>,
 
     @field:SerializedName("subject_name")
     val subjectName: String? = null,

@@ -12,7 +12,7 @@ data class TryOutResponse(
     val code: Int? = null,
 
     @field:SerializedName("data")
-    val data: List<DataItem>,
+    val data: List<DataItemResponse>,
 
     @field:SerializedName("message")
     val message: String? = null

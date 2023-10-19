@@ -6,7 +6,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 
-data class DiscussionItem(
+data class DiscussionItemResponse(
 
     @field:SerializedName("image")
     val image: String? = null,

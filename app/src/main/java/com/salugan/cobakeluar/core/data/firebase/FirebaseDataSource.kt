@@ -1,4 +1,4 @@
-package com.salugan.cobakeluar.data.firebase
+package com.salugan.cobakeluar.core.data.firebase
 
 import android.content.Context
 import androidx.lifecycle.LiveData
@@ -8,21 +8,20 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.salugan.cobakeluar.core.domain.models.HasilModel
-import com.salugan.cobakeluar.core.domain.models.UserModel
+import com.salugan.cobakeluar.core.data.firebase.entities.HasilEntity
+import com.salugan.cobakeluar.core.data.firebase.entities.UserEntity
 import com.salugan.cobakeluar.core.utils.Result
 import com.salugan.cobakeluar.utils.DeviceConnection
 import javax.inject.Inject
+import javax.inject.Singleton
 
-class Repository @Inject constructor(
+@Singleton
+class FirebaseDataSource @Inject constructor(
     private val db: FirebaseDatabase,
     private val context: Context
 ) {
-    val resultAddData = MutableLiveData<Result<String>>()
-    val resultDataProfile = MutableLiveData<Result<UserModel>>()
-    val resulHasilTO = MutableLiveData<Result<String>>()
-
-    fun userData(addData: UserModel): LiveData<Result<String>> {
+    fun insertUser(addData: UserEntity): LiveData<Result<String>> {
+        val resultAddData = MutableLiveData<Result<String>>()
         val database = db.getReference("users")
         val spesificDatabase = database.child(addData.userId!!)
 
@@ -36,15 +35,16 @@ class Repository @Inject constructor(
         return resultAddData
     }
 
-    fun dataProfile(userId: String): LiveData<Result<UserModel>> {
+    fun getUser(userId: String): LiveData<Result<UserEntity>> {
+        val resultDataProfile = MutableLiveData<Result<UserEntity>>()
         resultDataProfile.value = Result.Loading
         val database = db.getReference("users")
         val query = database.orderByChild("userId").equalTo(userId)
         query.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val foundUser = mutableListOf<UserModel>()
+                val foundUser = mutableListOf<UserEntity>()
                 for (dataSnapshot in snapshot.children) {
-                    val user = dataSnapshot.getValue(UserModel::class.java)
+                    val user = dataSnapshot.getValue(UserEntity::class.java)
                     user?.let { foundUser.add(it) }
                 }
                 if (foundUser.isNotEmpty()) {
@@ -63,7 +63,8 @@ class Repository @Inject constructor(
 
 
     //Hasill try out
-    fun hasilTryOut(addData: HasilModel): LiveData<Result<String>> {
+    fun hasilTryOut(addData: HasilEntity): LiveData<Result<String>> {
+        val resulHasilTO = MutableLiveData<Result<String>>()
         val userRef = db.getReference("users")
         val userSpecificRef = userRef.child(addData.userId!!).child("tryout")
         val newUserRef = userSpecificRef.push()
@@ -79,11 +80,11 @@ class Repository @Inject constructor(
         return resulHasilTO
     }
 
-    fun getHasilTryout(userId: String): LiveData<Result<List<HasilModel>>> = liveData {
+    fun getHasilTryout(userId: String): LiveData<Result<List<HasilEntity>>> = liveData {
         val userRef = db.getReference("users")
 
 
-        val liveData = MutableLiveData<Result<List<HasilModel>>>()
+        val liveData = MutableLiveData<Result<List<HasilEntity>>>()
         liveData.value = Result.Loading
 
         if (!DeviceConnection.isNetworkConnected(context)) {
@@ -94,10 +95,10 @@ class Repository @Inject constructor(
 
         val tryoutsListener = object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val tryoutsList = mutableListOf<HasilModel>()
+                val tryoutsList = mutableListOf<HasilEntity>()
 
                 dataSnapshot.children.forEach { tryoutSnapshot ->
-                    val tryout = tryoutSnapshot.getValue(HasilModel::class.java)
+                    val tryout = tryoutSnapshot.getValue(HasilEntity::class.java)
                     if (tryout != null) {
                         tryoutsList.add(tryout)
                     }
@@ -115,5 +116,4 @@ class Repository @Inject constructor(
 
         emitSource(liveData)
     }
-
 }

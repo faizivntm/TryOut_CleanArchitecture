@@ -6,7 +6,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 
-data class ShortAnswerItem(
+data class ShortAnswerItemResponse(
 
     @field:SerializedName("second_range")
     val secondRange: String? = null,
