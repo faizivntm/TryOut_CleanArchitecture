@@ -1,4 +1,4 @@
-package com.salugan.cobakeluar.data
+package com.salugan.cobakeluar.core.data.api
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.liveData
@@ -7,14 +7,16 @@ import com.salugan.cobakeluar.core.domain.models.QuestionModel
 import com.salugan.cobakeluar.core.utils.DataMapper
 import com.salugan.cobakeluar.core.utils.Error
 import com.salugan.cobakeluar.core.utils.Result
+import javax.inject.Inject
 
-class TryoutRepository(private val apiService: ApiService) {
-
+class ApiDataSource @Inject constructor(
+    private val apiService: ApiService
+) {
     /**
      * this method to get "Data dan Ketidakpastian" tryout data from API, filter it,and map it to custom model
      * @author Julio Nicholas
      * @since 1 September 2023.
-     * Updated 14 September 2023 by Julio Nicholas
+     * Updated 19 Oktober 2023 by Ghifari Octaverin
      * */
     fun getDataDanKetidakPastianQuestions(): LiveData<Result<List<QuestionModel>>> = liveData {
         emit(Result.Loading)

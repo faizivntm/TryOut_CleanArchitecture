@@ -4,11 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
-import com.salugan.cobakeluar.data.Result
+import com.salugan.cobakeluar.core.data.local.TryoutManager
+import com.salugan.cobakeluar.core.domain.models.HasilModel
 import com.salugan.cobakeluar.data.firebase.Repository
-import com.salugan.cobakeluar.data.local.TryoutManager
-import com.salugan.cobakeluar.model.HasilModel
-import com.salugan.cobakeluar.model.UserModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -17,9 +15,9 @@ import javax.inject.Inject
 class HasilViewModel @Inject constructor(
     private val repository: Repository,
     private val tryoutManager: TryoutManager
-): ViewModel(){
+) : ViewModel() {
     val resultHasilTO = repository.resulHasilTO
-    fun addHasil(addHasil: HasilModel) =repository.hasilTryOut(addHasil)
+    fun addHasil(addHasil: HasilModel) = repository.hasilTryOut(addHasil)
 
     fun getTryoutStatus(): LiveData<Boolean> = tryoutManager.tryoutFinished.asLiveData()
 

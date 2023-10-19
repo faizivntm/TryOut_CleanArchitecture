@@ -5,15 +5,11 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.salugan.cobakeluar.R
-import com.salugan.cobakeluar.data.Result
+import com.salugan.cobakeluar.core.domain.models.HasilModel
+import com.salugan.cobakeluar.core.utils.Result
 import com.salugan.cobakeluar.databinding.ActivityHasilToBinding
-import com.salugan.cobakeluar.model.HasilModel
-import com.salugan.cobakeluar.model.UserModel
-import com.salugan.cobakeluar.ui.activity.authentication.signup.SignupViewModel
 import com.salugan.cobakeluar.ui.activity.home.HomeActivity
 import com.salugan.cobakeluar.utils.DateTimeUtils
 import dagger.hilt.android.AndroidEntryPoint
@@ -49,7 +45,7 @@ class ActivityHasil : AppCompatActivity() {
      * @param answers An [ArrayList] containing user's answers to quiz questions.
      * @param completionTime The completion time of the quiz.
      */
-    private fun initView(){
+    private fun initView() {
 
         val score = intent.getIntExtra(SCORE, 0)
         val answers = intent.getIntegerArrayListExtra(ANSWERS)
@@ -64,7 +60,7 @@ class ActivityHasil : AppCompatActivity() {
         binding.tanggal.text = tanggal
         binding.waktu.text = waktu
 
-        binding.btnHome.setOnClickListener{
+        binding.btnHome.setOnClickListener {
             startActivity(Intent(this, HomeActivity::class.java))
         }
 

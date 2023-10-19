@@ -1,31 +1,25 @@
 package com.salugan.cobakeluar.ui.activity.history.ketidakpastian
 
 import android.content.ContentValues
-import android.content.Context
 import android.graphics.Bitmap
-import android.net.ConnectivityManager
-import android.net.NetworkInfo
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.drawToBitmap
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.kennyc.view.MultiStateView
 import com.salugan.cobakeluar.R
-import com.salugan.cobakeluar.adapter.HistoryAdapter
-import com.salugan.cobakeluar.data.Result
+import com.salugan.cobakeluar.core.domain.models.HasilModel
+import com.salugan.cobakeluar.core.ui.HistoryAdapter
+import com.salugan.cobakeluar.core.utils.Result
 import com.salugan.cobakeluar.databinding.ActivityHistoryBinding
-import com.salugan.cobakeluar.model.HasilModel
-import com.salugan.cobakeluar.utils.DeviceConnection
 import dagger.hilt.android.AndroidEntryPoint
 import java.io.IOException
 
