@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
+    <application
+        android:name=".MyApplication"
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.CobaKeluar"
+        tools:targetApi="31">
+        <activity
+            android:name=".ui.activity.home.HomeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activity.soal.SoalActivity"
+            android:windowSoftInputMode="adjustPan"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activity.materi.MateriScreenActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activity.main.MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".ui.activity.authentication.ActivityLogin"
+            android:label="login">
+
+        </activity>
+
+        <activity android:name=".ui.activity.profile.ActivityProfile"
+            android:label="profile">
+
+        </activity>
+
+        <activity android:name=".ui.activity.history.ketidakpastian.ActivityHistory"
+            android:label="history">
+
+        </activity>
+
+        <activity android:name=".ui.activity.authentication.signup.ActivitySignUp"
+            android:label="signup">
+        </activity>
+
+        <activity android:name=".ui.activity.authentication.ActivityForgotPassword"
+            android:label="forgorPassword">
+        </activity>
+        <activity android:name=".ui.activity.hasil.ActivityHasil"
+            android:label="hasil">
+        </activity>
+    </application>
+
+</manifest>
