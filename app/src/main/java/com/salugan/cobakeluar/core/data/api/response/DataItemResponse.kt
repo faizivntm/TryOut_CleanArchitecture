@@ -5,10 +5,10 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class DataItem(
+data class DataItemResponse(
 
     @field:SerializedName("tryout")
-    val tryout: List<TryoutItem>,
+    val tryout: List<TryoutItemResponse>,
 
     @field:SerializedName("subject_name")
     val subjectName: String? = null,

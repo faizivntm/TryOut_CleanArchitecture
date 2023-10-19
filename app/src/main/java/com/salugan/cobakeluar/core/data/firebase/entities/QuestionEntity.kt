@@ -1,20 +1,17 @@
-package com.salugan.cobakeluar.core.domain.models
+package com.salugan.cobakeluar.core.data.firebase.entities
 
-import android.os.Parcelable
 import com.salugan.cobakeluar.core.data.api.response.DiscussionItemResponse
 import com.salugan.cobakeluar.core.data.api.response.SelectionAnswerItemResponse
 import com.salugan.cobakeluar.core.data.api.response.ShortAnswerItemResponse
-import kotlinx.parcelize.Parcelize
 
-@Parcelize
-data class QuestionModel(
+data class QuestionEntity(
     val id: Int?,
     val tryoutId: Int?,
     val questionId: Int?,
     val qtId: Int?,
     val essayAnswer: String?,
     val questionText: String?,
-    val selections: List<SelectionModel>?,
+    val selections: List<SelectionEntity>?,
     val selectionAnswer: List<SelectionAnswerItemResponse?>?,
     val keyword: List<String?>?,
     val shortAnswer: List<ShortAnswerItemResponse?>?,
@@ -24,4 +21,4 @@ data class QuestionModel(
     val isMultipleChoice: Boolean,
     val isMultipleCorrectChoice: Boolean,
     var hasSelected: Boolean,
-) : Parcelable
+)

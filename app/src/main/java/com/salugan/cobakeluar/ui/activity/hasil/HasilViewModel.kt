@@ -19,6 +19,7 @@ class HasilViewModel @Inject constructor(
     val resultHasilTO = repository.resulHasilTO
     fun addHasil(addHasil: HasilModel) = repository.hasilTryOut(addHasil)
 
+    // ini ganti ambil ke repository (semua yg pake tryoutmanager)
     fun getTryoutStatus(): LiveData<Boolean> = tryoutManager.tryoutFinished.asLiveData()
 
     fun setTryoutStatus(finished: Boolean) {

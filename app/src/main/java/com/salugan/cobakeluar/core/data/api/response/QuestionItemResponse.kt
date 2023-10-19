@@ -6,16 +6,16 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 
-data class QuestionItem(
+data class QuestionItemResponse(
 
     @field:SerializedName("statement_question")
     val statementQuestion: List<String?>? = null,
 
     @field:SerializedName("selection")
-    val selection: List<SelectionItem?>? = null,
+    val selection: List<SelectionItemResponse?>? = null,
 
     @field:SerializedName("selection_answer")
-    val selectionAnswer: List<SelectionAnswerItem?>? = null,
+    val selectionAnswer: List<SelectionAnswerItemResponse?>? = null,
 
     @field:SerializedName("essay_answer")
     val essayAnswer: String? = null,
@@ -24,7 +24,7 @@ data class QuestionItem(
     val questionText: String? = null,
 
     @field:SerializedName("short_answer")
-    val shortAnswer: List<ShortAnswerItem?>? = null,
+    val shortAnswer: List<ShortAnswerItemResponse?>? = null,
 
     @field:SerializedName("qt_id")
     val qtId: Int? = null,
@@ -33,7 +33,7 @@ data class QuestionItem(
     val id: Int? = null,
 
     @field:SerializedName("discussion")
-    val discussion: List<DiscussionItem?>? = null,
+    val discussion: List<DiscussionItemResponse?>? = null,
 
     @field:SerializedName("tryout_id")
     val tryoutId: Int? = null,
