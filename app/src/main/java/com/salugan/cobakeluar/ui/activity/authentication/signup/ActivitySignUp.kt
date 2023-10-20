@@ -11,11 +11,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.salugan.cobakeluar.R
-import com.salugan.cobakeluar.data.Error
+import com.salugan.cobakeluar.core.domain.models.UserModel
+import com.salugan.cobakeluar.core.utils.Error
+import com.salugan.cobakeluar.core.utils.Result
 import com.salugan.cobakeluar.databinding.ActivitySignUpBinding
-import com.salugan.cobakeluar.model.UserModel
 import com.salugan.cobakeluar.ui.activity.home.HomeActivity
-import com.salugan.cobakeluar.data.Result
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.regex.Pattern
 
@@ -53,7 +53,7 @@ class ActivitySignUp : AppCompatActivity() {
      * @see FirebaseAuth https://firebase.google.com/docs/auth/android/start?hl=id
      * @see HomeActivity
      */
-    private fun validasiSignUp(){
+    private fun validasiSignUp() {
         val nama = binding.nama.text.toString()
         val email = binding.email.text.toString()
         val noHp = binding.noHp.text.toString()
@@ -90,7 +90,8 @@ class ActivitySignUp : AppCompatActivity() {
                                     loadingDialog?.dismiss()
                                     val intent = Intent(this, HomeActivity::class.java)
                                     startActivity(intent)
-                                    Toast.makeText(this, "berhasil mendaftar", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(this, "berhasil mendaftar", Toast.LENGTH_SHORT)
+                                        .show()
                                 }
 
                                 is Result.Error<*> -> {
@@ -103,7 +104,11 @@ class ActivitySignUp : AppCompatActivity() {
                                     }
                                     loadingDialog?.dismiss()
 
-                                    Toast.makeText(this, (it.errorData as Error).message, Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(
+                                        this,
+                                        (it.errorData as Error).message,
+                                        Toast.LENGTH_SHORT
+                                    ).show()
                                 }
 
                             }

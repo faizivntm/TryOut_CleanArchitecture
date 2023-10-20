@@ -6,23 +6,19 @@ import android.os.Bundle
 import android.text.Html
 import android.text.format.DateUtils
 import android.util.Log
-import android.view.Gravity
-
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
-import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.tabs.TabLayout
 import com.salugan.cobakeluar.R
+import com.salugan.cobakeluar.core.domain.models.QuestionModel
+import com.salugan.cobakeluar.core.domain.models.SelectionModel
 import com.salugan.cobakeluar.databinding.FragmentMultipleAnswerQuestionBinding
-import com.salugan.cobakeluar.model.QuestionModel
-import com.salugan.cobakeluar.model.SelectionModel
 import com.salugan.cobakeluar.ui.activity.hasil.ActivityHasil
 import com.salugan.cobakeluar.ui.activity.soal.SoalActivity
 import com.salugan.cobakeluar.utils.QUESTION
@@ -123,7 +119,7 @@ class MultipleAnswerQuestion : Fragment() {
                 LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
             )
-            mathViewLayoutParams.setMargins(8,8,8,8)
+            mathViewLayoutParams.setMargins(8, 8, 8, 8)
             mathViewOption.layoutParams = mathViewLayoutParams
 
             val processedLatexText = StringProcessing.processLatexText(option.text!!)
@@ -174,7 +170,8 @@ class MultipleAnswerQuestion : Fragment() {
 
             if (answers.isNotEmpty()) {
                 val tabView =
-                    LayoutInflater.from(requireContext()).inflate(R.layout.tab_title, null) as TextView
+                    LayoutInflater.from(requireContext())
+                        .inflate(R.layout.tab_title, null) as TextView
 
                 var isAnswerCorrect = false
 
@@ -196,7 +193,7 @@ class MultipleAnswerQuestion : Fragment() {
                     (requireActivity() as SoalActivity).answers[viewPager.currentItem] = 1
                     (requireActivity() as SoalActivity).score += 1
                     tabView.setBackgroundResource(R.drawable.tab_correct_background)
-                } else if(answers.size != 0) {
+                } else if (answers.size != 0) {
                     (requireActivity() as SoalActivity).answers[viewPager.currentItem] = 2
                     (requireActivity() as SoalActivity).score += 0
                     tabView.setBackgroundResource(R.drawable.tab_uncorrect_background)
@@ -254,15 +251,16 @@ class MultipleAnswerQuestion : Fragment() {
     }
 
     private fun checkTryoutStatus() {
-        (requireActivity() as SoalActivity).soalViewModel.getTryoutStatus().observe(requireActivity()) {
-            Log.d("itumasbrow", "state: $it")
+        (requireActivity() as SoalActivity).soalViewModel.getTryoutStatus()
+            .observe(requireActivity()) {
+                Log.d("itumasbrow", "state: $it")
 
-            if (it) {
-                disableScrolling()
-                binding.btnJawab.visibility = View.GONE
-                binding.btnCekPembahasan.visibility = View.VISIBLE
+                if (it) {
+                    disableScrolling()
+                    binding.btnJawab.visibility = View.GONE
+                    binding.btnCekPembahasan.visibility = View.VISIBLE
+                }
             }
-        }
     }
 
     private fun setButtonNext() {
@@ -277,13 +275,17 @@ class MultipleAnswerQuestion : Fragment() {
                 (requireActivity() as SoalActivity).soalViewModel.stopTimer()
                 val score = (requireActivity() as SoalActivity).score
 
-                val completionTimeMillis = (requireActivity() as SoalActivity).soalViewModel.calculateCompletionTime()
+                val completionTimeMillis =
+                    (requireActivity() as SoalActivity).soalViewModel.calculateCompletionTime()
                 val completionTimeSeconds = completionTimeMillis / 1000
                 val completionTimeString = DateUtils.formatElapsedTime(completionTimeSeconds)
 
                 val intent = Intent(requireActivity(), ActivityHasil::class.java)
                 intent.putExtra(ActivityHasil.SCORE, score)
-                intent.putExtra(ActivityHasil.ANSWERS, ArrayList((requireActivity() as SoalActivity).answers))
+                intent.putExtra(
+                    ActivityHasil.ANSWERS,
+                    ArrayList((requireActivity() as SoalActivity).answers)
+                )
                 intent.putExtra(ActivityHasil.COMPLETION_TIME, completionTimeString)
                 startActivity(intent)
             }
@@ -297,7 +299,6 @@ class MultipleAnswerQuestion : Fragment() {
             viewPager.setCurrentItem(currentItem - 1, true)
         }
     }
-
 
 
     private fun showBottomSheet(discussion: String?) {
