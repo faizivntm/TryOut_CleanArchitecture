@@ -9,7 +9,8 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 
-@Module(includes = [ApiModule::class, DatabaseModule::class, FirebaseModule::class])
+@Module(includes = [ApiModule::class, DatabaseModule::class, FirebaseModule::class, DataSourceModule::class
+])
 @InstallIn(SingletonComponent::class)
 abstract class RepositoryModule {
     @Binds
