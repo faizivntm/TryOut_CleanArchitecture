@@ -80,7 +80,7 @@ class ActivitySignUp : AppCompatActivity() {
                             noHp = noHp,
                         )
                         viewModel.addUser(addData)
-                        viewModel.resultAddData.observe(this) {
+                        .observe(this) {
                             when (it) {
                                 is Result.Loading -> {
                                     loading()

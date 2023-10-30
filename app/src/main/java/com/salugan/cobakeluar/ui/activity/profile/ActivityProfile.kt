@@ -37,8 +37,7 @@ class ActivityProfile : AppCompatActivity() {
         val currentUser = mAuth.currentUser
         val id = currentUser?.uid
         viewModel = ViewModelProvider(this).get(ProfileViewModel::class.java)
-        viewModel.dataProfile(id!!)
-        viewModel.resultDataProfile.observe(this) {
+        viewModel.dataProfile(id!!).observe(this) {
             when (it) {
                 is Result.Success -> {
                     if (it.data.email!!.isEmpty() && it.data.nama!!.isEmpty() && it.data.noHp!!.isEmpty()) {

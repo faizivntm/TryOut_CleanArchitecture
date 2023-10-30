@@ -100,7 +100,7 @@ class ActivityHasil : AppCompatActivity() {
                     viewModel.setTryoutStatus(true)
                 }
             }
-            viewModel.resultHasilTO.observe(this) {
+            viewModel.addHasil(addHasil).observe(this) {
                 when (it) {
                     is Result.Loading -> {
                     }
@@ -115,7 +115,6 @@ class ActivityHasil : AppCompatActivity() {
                 }
             }
         }
-
     }
 
     companion object {

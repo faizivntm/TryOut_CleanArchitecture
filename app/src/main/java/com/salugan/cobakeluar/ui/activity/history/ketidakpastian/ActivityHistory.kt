@@ -46,10 +46,31 @@ class ActivityHistory : AppCompatActivity() {
         val id = currentUser?.uid
 
         showHistoryTryout(id!!)
+        showDataPengguna(id)
 
         binding.btnCetak.setOnClickListener {
             val bitmap = getBitmapFromView(binding.halamanCetak)
             saveBitmapToMediaStore(bitmap)
+        }
+    }
+
+    private fun showDataPengguna(id: String){
+        viewModel.dataProfile(id).observe(this) {
+            when (it) {
+                is Result.Success -> {
+                    multiStateView.viewState = MultiStateView.ViewState.CONTENT
+                    binding.namaPengguna.text = it.data.nama
+                    binding.emailPengguna.text = it.data.email
+                }
+
+                is Result.Error<*> -> {
+                    multiStateView.viewState = MultiStateView.ViewState.ERROR
+                    Toast.makeText(this, "Data gagal diambil", Toast.LENGTH_SHORT).show()
+                }
+
+                is Result.Loading -> {
+                }
+            }
         }
     }
 

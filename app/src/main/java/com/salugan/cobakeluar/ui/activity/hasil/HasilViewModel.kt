@@ -4,27 +4,23 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
+import com.salugan.cobakeluar.core.data.local.LocalDataSource
 import com.salugan.cobakeluar.core.data.local.TryoutManager
 import com.salugan.cobakeluar.core.domain.models.HasilModel
-import com.salugan.cobakeluar.data.firebase.Repository
+import com.salugan.cobakeluar.core.domain.usecases.TryOutUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class HasilViewModel @Inject constructor(
-    private val repository: Repository,
-    private val tryoutManager: TryoutManager
+    private val tryOutUseCase: TryOutUseCase,
 ) : ViewModel() {
-    val resultHasilTO = repository.resulHasilTO
-    fun addHasil(addHasil: HasilModel) = repository.hasilTryOut(addHasil)
-
-    // ini ganti ambil ke repository (semua yg pake tryoutmanager)
-    fun getTryoutStatus(): LiveData<Boolean> = tryoutManager.tryoutFinished.asLiveData()
-
+    fun addHasil(addHasil: HasilModel) = tryOutUseCase.insertHasilTryout(addHasil)
+    fun getTryoutStatus(): LiveData<Boolean> = tryOutUseCase.getTryoutStatus()
     fun setTryoutStatus(finished: Boolean) {
         viewModelScope.launch {
-            tryoutManager.setTryoutFinished(finished)
+            tryOutUseCase.setTryoutStatus(finished)
         }
     }
 }

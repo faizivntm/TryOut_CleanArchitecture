@@ -8,18 +8,19 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.map
 import androidx.lifecycle.viewModelScope
+import com.salugan.cobakeluar.core.data.local.LocalDataSource
 import com.salugan.cobakeluar.core.data.local.TryoutManager
 import com.salugan.cobakeluar.core.domain.models.QuestionModel
+import com.salugan.cobakeluar.core.domain.usecases.TryOutUseCase
 import com.salugan.cobakeluar.core.utils.Result
-import com.salugan.cobakeluar.data.TryoutRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class SoalViewModel @Inject constructor(
-    private val tryoutRepository: TryoutRepository,
-    private val tryoutManager: TryoutManager
+    private val tryOutUseCase: TryOutUseCase,
+    private val localDataSource: LocalDataSource
 ) : ViewModel() {
 
     private var timer: CountDownTimer? = null
@@ -117,7 +118,7 @@ class SoalViewModel @Inject constructor(
      * @since 5 September 2023.
      * */
     fun getDataDanKetidakPastianQuestion(): LiveData<Result<List<QuestionModel>>> {
-        return tryoutRepository.getDataDanKetidakPastianQuestions()
+        return tryOutUseCase.getDataDanKetidakPastianQuestions()
     }
 
     /**
@@ -126,14 +127,14 @@ class SoalViewModel @Inject constructor(
      * @since 5 September 2023.
      * */
     fun getGeometriDanPengukuranQuestion(): LiveData<Result<List<QuestionModel>>> {
-        return tryoutRepository.getGeometriDanPengukuranQuestion()
+        return tryOutUseCase.getGeometriDanPengukuranQuestion()
     }
 
-    fun getTryoutStatus(): LiveData<Boolean> = tryoutManager.tryoutFinished.asLiveData()
+    fun getTryoutStatus(): LiveData<Boolean> = localDataSource.getTryoutStatus()
 
     fun setTryoutStatus(finished: Boolean) {
         viewModelScope.launch {
-            tryoutManager.setTryoutFinished(finished)
+            localDataSource.setTryoutStatus(finished)
         }
     }
 
